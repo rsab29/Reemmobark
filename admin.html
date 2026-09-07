@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الإدارة | مدرسة درب العقيدة</title>
+<style>
+body{margin:0;font-family:Tahoma,Arial;background:#f1faf7;color:#173b36}.wrap{max-width:1200px;margin:auto;padding:22px}
+.card{background:#fff;border-radius:22px;padding:22px;margin:15px 0;box-shadow:0 7px 24px #075b5015}
+h1,h2{color:#075b50}.top{display:flex;gap:10px;flex-wrap:wrap}input{padding:12px;border:1px solid #cfe2dd;border-radius:12px;min-width:280px}button{padding:12px 18px;border:0;border-radius:12px;background:#0b7b68;color:#fff;font-weight:bold;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#e8f6f2;padding:18px;border-radius:16px;text-align:center}.stat b{font-size:28px;display:block;color:#075b50}
+table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px;border-bottom:1px solid #e7efed;text-align:right}th{background:#e8f6f2;color:#075b50}
+.scroll{overflow:auto}.msg{padding:12px;border-radius:12px;margin-top:10px}.err{background:#fff0f0;color:#a52a2a}.ok{background:#eaf8f1;color:#176047}
+@media(max-width:750px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="card">
+<h1>لوحة إدارة الحضور والتقييم</h1>
+<p>مدرسة درب العقيدة</p>
+<div class="top">
+<input id="api" placeholder="ضعي رابط Google Apps Script هنا">
+<button onclick="load()">عرض البيانات</button>
+<button onclick="printReport('attendance')">PDF الحضور</button>
+<button onclick="printReport('evaluation')">PDF التصويت والتقييم</button>
+</div><div id="msg"></div>
+</div>
+
+<div id="content" class="hidden">
+<div class="stats">
+<div class="stat">الحضور<b id="total">0</b></div><div class="stat">ChatGPT<b id="c1">0</b></div>
+<div class="stat">Gemini<b id="c2">0</b></div><div class="stat">NotebookLM<b id="c3">0</b></div>
+</div>
+<div class="card"><h2>قائمة الحضور</h2><div class="scroll"><table id="att"></table></div></div>
+<div class="card"><h2>قائمة التصويت والتقييم</h2><div class="scroll"><table id="eval"></table></div></div>
+</div>
+</div>
+<script>
+let rows=[];
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+async function load(){
+ const api=document.getElementById("api").value.trim(); if(!api)return msg("ضعي رابط Google Apps Script أولًا",true);
+ localStorage.setItem("api",api); msg("جارٍ تحميل البيانات...");
+ try{const r=await fetch(api+"?action=list");const d=await r.json();if(!d.ok)throw Error();
+ rows=d.rows||[];render();msg("تم تحديث البيانات.",false);document.getElementById("content").classList.remove("hidden")}
+ catch(e){msg("تعذر الوصول للبيانات. تأكدي من رابط Web App وصلاحياته.",true)}
+}
+function msg(t,e){document.getElementById("msg").className="msg "+(e?"err":"ok");document.getElementById("msg").textContent=t}
+function render(){
+ document.getElementById("total").textContent=rows.length;
+ const count=p=>rows.filter(x=>x.program===p).length;
+ document.getElementById("c1").textContent=count("ChatGPT");document.getElementById("c2").textContent=count("Gemini");document.getElementById("c3").textContent=count("NotebookLM");
+ document.getElementById("att").innerHTML="<tr><th>م</th><th>الاسم</th><th>المسمى</th><th>وقت الحضور</th></tr>"+rows.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.role)}</td><td>${esc(x.timestamp)}</td></tr>`).join("");
+ const cols=[["name","الاسم"],["role","المسمى"],["program","البرنامج"],["program_quality","جودة البرنامج"],["program_usefulness","الفائدة"],["trainer_clarity","وضوح الشرح"],["trainer_mastery","تمكن المدربة"],["trainer_interaction","التفاعل"],["trainer_questions","الاستفسارات"],["material_clarity","وضوح المادة"],["material_relevance","ملاءمة المحتوى"],["material_examples","الأمثلة"],["material_practical","الاستفادة العملية"],["overall","التقييم العام"],["comment","الملاحظات"]];
+ document.getElementById("eval").innerHTML="<tr><th>م</th>"+cols.map(c=>`<th>${c[1]}</th>`).join("")+"</tr>"+rows.map((x,i)=>`<tr><td>${i+1}</td>`+cols.map(c=>`<td>${esc(x[c[0]])}</td>`).join("")+"</tr>").join("");
+}
+function printReport(type){
+ if(!rows.length)return alert("حمّلي البيانات أولًا.");
+ let html=`<html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير</title><style>body{font-family:Tahoma,Arial;padding:25px}h1{color:#075b50}table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbb;padding:7px;font-size:11px}th{background:#e8f6f2}</style></head><body><h1>مدرسة درب العقيدة</h1><h2>${type==="attendance"?"سجل الحضور":"تقرير التصويت والتقييم"}</h2><table>`;
+ if(type==="attendance") html+="<tr><th>م</th><th>الاسم</th><th>المسمى الوظيفي</th><th>وقت الحضور</th></tr>"+rows.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.role)}</td><td>${esc(x.timestamp)}</td></tr>`).join("");
+ else {const cols=[["name","الاسم"],["role","المسمى"],["program","البرنامج"],["program_quality","جودة البرنامج"],["program_usefulness","الفائدة"],["trainer_clarity","وضوح الشرح"],["trainer_mastery","تمكن المدربة"],["trainer_interaction","التفاعل"],["trainer_questions","الاستفسارات"],["material_clarity","وضوح المادة"],["material_relevance","ملاءمة المحتوى"],["material_examples","الأمثلة"],["material_practical","الاستفادة العملية"],["overall","التقييم العام"],["comment","الملاحظات"]];html+="<tr>"+cols.map(c=>`<th>${c[1]}</th>`).join("")+"</tr>"+rows.map(x=>`<tr>`+cols.map(c=>`<td>${esc(x[c[0]])}</td>`).join("")+"</tr>`).join("")}
+ html+="</table><script>window.onload=()=>window.print()<\\/script></body></html>";const w=window.open();w.document.write(html);w.document.close();
+}
+document.getElementById("api").value=localStorage.getItem("api")||"";
+</script>
+</body></html>
