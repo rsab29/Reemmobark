@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الحضور والتصويت والتقييم | مدرسة درب العقيدة</title>
+<style>
+:root{--green:#0b7b68;--dark:#075b50;--mint:#e8f6f2;--gold:#c9a44c;--text:#173b36;--white:#fff;--muted:#6b7f7a}
+*{box-sizing:border-box}body{margin:0;font-family:"Tahoma","Arial",sans-serif;background:linear-gradient(135deg,#f7fffd,#e8f6f2);color:var(--text)}
+.container{max-width:900px;margin:auto;padding:22px}
+header{background:var(--white);border-radius:24px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-shadow:0 8px 25px #0b7b6815;margin-bottom:18px}
+.logo{width:85px;height:85px;object-fit:contain}.brand h1{margin:0;color:var(--dark);font-size:26px}.brand p{margin:7px 0 0;color:var(--muted)}
+.card{background:var(--white);border-radius:24px;padding:24px;margin:16px 0;box-shadow:0 8px 25px #0b7b6812}
+h2{margin-top:0;color:var(--dark)}h3{color:var(--dark)}
+.step{display:inline-block;background:var(--gold);color:#fff;border-radius:30px;padding:7px 14px;font-weight:bold;margin-bottom:10px}
+label{display:block;font-weight:bold;margin:13px 0 7px}input,select,textarea{width:100%;border:1px solid #cfe2dd;border-radius:13px;padding:13px;font-size:16px;background:#fbfffe}
+textarea{min-height:100px;resize:vertical}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.choice{border:2px solid #d8ebe6;border-radius:17px;padding:16px;background:#fbfffe;cursor:pointer;transition:.2s}.choice:hover{transform:translateY(-2px)}.choice.selected{border-color:var(--green);background:var(--mint)}
+.choice input{width:auto;margin-left:8px}.btn{border:0;border-radius:14px;padding:14px 22px;font-size:16px;font-weight:bold;cursor:pointer;background:var(--green);color:#fff;margin-top:16px}.btn.secondary{background:#e9f3f1;color:var(--dark)}
+.rating-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border-bottom:1px solid #edf3f1;padding:12px 0}.stars{direction:rtl;display:flex;gap:3px}.star{font-size:28px;color:#cbd8d5;cursor:pointer}.star.on{color:var(--gold)}
+.note{background:#fff8e7;border-right:4px solid var(--gold);padding:12px;border-radius:10px;color:#725b24}.hidden{display:none}.success{background:#eaf8f1;border:1px solid #b9dfd2;border-radius:18px;padding:20px;text-align:center}.error{color:#a52a2a;background:#fff0f0;padding:12px;border-radius:10px;margin-top:10px}
+footer{text-align:center;color:var(--muted);padding:20px}.adminlink{font-size:12px;color:#80928e;text-decoration:none}
+@media(max-width:650px){.grid,.choices{grid-template-columns:1fr}header{align-items:flex-start}.logo{width:65px;height:65px}.brand h1{font-size:21px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <img class="logo" src="IMG_8268.png" alt="وزارة التعليم">
+  <div class="brand"><h1>مدرسة درب العقيدة</h1><p>سجل الحضور والتصويت وتقييم البرنامج التدريبي</p></div>
+</header>
+
+<div id="formArea">
+<section class="card">
+  <span class="step">١ — الحضور</span>
+  <h2>تسجيل الحضور</h2>
+  <label for="name">الاسم الكامل</label>
+  <input id="name" autocomplete="name" placeholder="اكتبي الاسم الثلاثي أو الكامل">
+  <label for="role">المسمى الوظيفي</label>
+  <select id="role">
+    <option value="">اختاري المسمى</option>
+    <option>معلمة</option><option>مديرة</option><option>وكيلة</option><option>إدارية</option>
+  </select>
+</section>
+
+<section class="card">
+  <span class="step">٢ — التصويت</span>
+  <h2>أي برنامج ذكاء اصطناعي تستخدمين أكثر؟</h2>
+  <div class="choices" id="programs">
+    <label class="choice"><input type="radio" name="program" value="ChatGPT"> ChatGPT</label>
+    <label class="choice"><input type="radio" name="program" value="Gemini"> Gemini</label>
+    <label class="choice"><input type="radio" name="program" value="NotebookLM"> NotebookLM</label>
+    <label class="choice"><input type="radio" name="program" value="Canva"> Canva</label>
+    <label class="choice"><input type="radio" name="program" value="Microsoft Copilot"> Microsoft Copilot</label>
+  </div>
+</section>
+
+<section class="card">
+  <span class="step">٣ — التقييم</span>
+  <h2>تقييم البرنامج والورشة التدريبية</h2>
+  <div class="note">التصويت السابق لا يقيّم البرنامج؛ التقييم هنا خاص بجودة البرنامج، المدربة، والمادة التدريبية.</div>
+
+  <h3>أولًا: جودة البرنامج</h3>
+  <div id="programQuality"></div>
+
+  <h3>ثانيًا: تقييم المدربة</h3>
+  <div id="trainer"></div>
+
+  <h3>ثالثًا: تقييم المادة التدريبية</h3>
+  <div id="material"></div>
+
+  <h3>رابعًا: التقييم العام للورشة</h3>
+  <div id="overall"></div>
+
+  <label for="comment">ملاحظات أو مقترحات (اختياري)</label>
+  <textarea id="comment" placeholder="اكتبي ملاحظتك أو مقترحك..."></textarea>
+  <button class="btn" id="submitBtn">إرسال الحضور والتصويت والتقييم</button>
+  <div id="msg"></div>
+</section>
+</div>
+
+<section class="card hidden" id="success">
+  <div class="success">
+    <h2>تم التسجيل بنجاح 🌿</h2>
+    <p>شكرًا لكِ، تم حفظ الحضور والتصويت والتقييم.</p>
+  </div>
+</section>
+
+<footer>
+  <div>تبادل الخبرات • نلهم بعضنا • نصنع مستقبلًا أفضل</div>
+  <a class="adminlink" href="admin.html">لوحة الإدارة</a>
+</footer>
+</div>
+
+<script>
+/*
+  بعد نشر Google Apps Script، ضعي رابط Web App في API_URL.
+  مثال: https://script.google.com/macros/s/XXXXX/exec
+*/
+const API_URL = "https://script.google.com/macros/s/AKfycbyOWdx41BpjNjsbb7u_xkWw7shXisx0tl6nm5lvJjTa/exec";
+
+const ratingGroups = {
+  programQuality: [
+    ["جودة البرنامج وسهولة استخدامه","program_quality"],
+    ["مدى فائدة البرنامج في العمل","program_usefulness"]
+  ],
+  trainer: [
+    ["وضوح الشرح","trainer_clarity"],
+    ["تمكن المدربة من المادة","trainer_mastery"],
+    ["أسلوب العرض والتفاعل","trainer_interaction"],
+    ["الاستجابة للاستفسارات","trainer_questions"]
+  ],
+  material: [
+    ["وضوح المادة التدريبية","material_clarity"],
+    ["مناسبة المحتوى للاحتياج","material_relevance"],
+    ["تنوع الأمثلة والتطبيقات","material_examples"],
+    ["الاستفادة العملية من المادة","material_practical"]
+  ],
+  overall: [["التقييم العام للورشة","overall"]]
+};
+
+const ratings = {};
+function buildRatings(){
+  for(const [container, items] of Object.entries(ratingGroups)){
+    const el=document.getElementById(container);
+    items.forEach(([label,key])=>{
+      ratings[key]=0;
+      const row=document.createElement("div"); row.className="rating-row";
+      row.innerHTML=`<div>${label}</div><div class="stars" aria-label="${label}">`+
+        [5,4,3,2,1].map(n=>`<span class="star" data-key="${key}" data-value="${n}">★</span>`).join("")+
+        `</div>`;
+      el.appendChild(row);
+    });
+  }
+  document.querySelectorAll(".star").forEach(s=>s.addEventListener("click",()=>{
+    const key=s.dataset.key, value=+s.dataset.value; ratings[key]=value;
+    document.querySelectorAll(`.star[data-key="${key}"]`).forEach(x=>x.classList.toggle("on", +x.dataset.value<=value));
+  }));
+}
+buildRatings();
+
+document.querySelectorAll(".choice").forEach(c=>{
+  c.addEventListener("click",()=>{
+    document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));
+    c.classList.add("selected");
+  });
+});
+
+function val(id){return document.getElementById(id).value.trim()}
+function showError(t){document.getElementById("msg").innerHTML=`<div class="error">${t}</div>`}
+
+document.getElementById("submitBtn").addEventListener("click", async ()=>{
+  const name=val("name"), role=val("role"), program=document.querySelector('input[name="program"]:checked')?.value;
+  if(!name || !role || !program) return showError("فضلاً أكّدي الاسم والمسمى الوظيفي واختاري البرنامج.");
+  const required=["program_quality","program_usefulness","trainer_clarity","trainer_mastery","trainer_interaction","trainer_questions","material_clarity","material_relevance","material_examples","material_practical","overall"];
+  if(required.some(k=>!ratings[k])) return showError("فضلاً أكملي جميع بنود التقييم بالنجوم.");
+  if(API_URL.startsWith("ضعِي_هنا")) return showError("تم تجهيز النموذج، لكن يلزم أولًا ربطه بقاعدة البيانات عبر Google Apps Script. راجعي ملف README.");
+  const payload={action:"submit",name,role,program,...ratings,comment:val("comment"),timestamp:new Date().toISOString()};
+  const btn=document.getElementById("submitBtn"); btn.disabled=true; btn.textContent="جارٍ الحفظ...";
+  try{
+    const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    const data=await r.json();
+    if(!data.ok) throw new Error(data.error||"تعذر الحفظ");
+    document.getElementById("formArea").classList.add("hidden");
+    document.getElementById("success").classList.remove("hidden");
+  }catch(e){showError("تعذر حفظ البيانات. تأكدي من نشر Google Apps Script كتطبيق ويب ثم حاولي مرة أخرى.");}
+  finally{btn.disabled=false;btn.textContent="إرسال الحضور والتصويت والتقييم";}
+});
+</script>
+</body>
+</html>
