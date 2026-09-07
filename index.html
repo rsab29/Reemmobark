@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تصويت تفاعلي | أدوات الذكاء الاصطناعي</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box} body{margin:0;font-family:Cairo,Tahoma,Arial,sans-serif;background:#f8fbfa;color:#073b48}
+:root{--green:#006b63;--deep:#004e49;--gold:#c99a35;--blue:#2176d2}
+.page{max-width:1500px;margin:auto;overflow:hidden;background:white;min-height:100vh;position:relative}
+.top{padding:16px 4% 8px;background:linear-gradient(120deg,#fff 65%,#eef8f5);position:relative}
+.brand{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.vision{display:none}.spacer-brand{flex:1}.ministry{text-align:right;font-weight:800;color:#063b73;line-height:1.7}.ministry-logo{width:260px;max-width:100%;height:auto;display:block;margin-right:auto}.school-name{font-size:18px;font-weight:900;margin-top:6px;color:#063b73}
+.hero{text-align:center;padding:4px 5% 20px}.pill{display:inline-block;background:linear-gradient(90deg,#006b63,#0a8475);color:#fff;border-radius:45px;padding:10px 60px;font-size:38px;font-weight:900;box-shadow:0 7px 18px #004e4930}.question{margin:14px auto 8px;max-width:1100px;background:#fffaf0;border:1px solid #ead8b2;border-radius:28px;padding:10px 25px;font-size:32px;font-weight:900;color:#073b48}.sub{font-size:19px;font-weight:700}
+.vote-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:0 4%}.card{border:1.5px solid #cbdedb;border-radius:18px;padding:16px 12px 12px;text-align:center;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(#f5fffd,#fff)}.card:nth-child(2){background:#f5f8ff}.card:nth-child(3){background:#fffaf0}.card:nth-child(4){background:#fff3fb}.card:nth-child(5){background:#f2f8ff}.logo{height:105px;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#fff;border-radius:22px;margin:auto;width:120px}.chat{background:#0a7b6f}.gem{background:#e8edff;color:#3155b7}.note{background:#fff;color:#111;border:4px solid #111}.canva{background:linear-gradient(135deg,#00c2d9,#7757db)}.cop{background:linear-gradient(135deg,#35c8b0,#315bdc,#b84ad2)}.name{font-size:24px;font-weight:900;margin-top:8px}.desc{font-size:17px;font-weight:800;line-height:1.5;min-height:58px}.btn{border:0;border-radius:13px;padding:11px 12px;font:800 17px Cairo;cursor:pointer;background:#e4f6f2;color:#005e56;transition:.2s}.btn:hover{transform:translateY(-2px)}.btn.selected{background:#006b63;color:white;box-shadow:0 5px 14px #006b6340}.count{font-size:13px;color:#567;display:block;margin-top:4px}.bar{height:7px;background:#e8eeee;border-radius:8px;margin-top:7px;overflow:hidden}.fill{height:100%;width:0;background:#0b897b;transition:.4s}
+.feedback{margin:20px 4%;border:1px solid #cfe2df;border-radius:20px;padding:12px;background:#f8fdfc}.feedback h2{margin:0 auto 8px;background:#006b63;color:#fff;border-radius:24px;max-width:700px;text-align:center;padding:7px;font-size:21px}.feedback textarea{width:100%;min-height:95px;border:1.5px solid #a9c9e7;border-radius:14px;padding:12px;font:600 16px Cairo;resize:vertical}.send{display:block;margin:10px auto 0;background:#dff3ee;border:0;border-radius:12px;padding:9px 28px;font:800 16px Cairo;color:#005d55;cursor:pointer}.tip{margin:10px 4%;padding:13px 20px;border-radius:16px;background:#fff7e8;border:1px solid #ead8b2;text-align:center;font-weight:800;color:#164b73}
+.footer{margin-top:20px;padding:16px 5%;background:linear-gradient(120deg,#004e49,#08766b);color:white;display:flex;justify-content:space-around;gap:15px;flex-wrap:wrap;font-weight:800}.footer span{padding:8px 18px;border-right:1px solid #ffffff55}.credit{font-size:13px;opacity:.9}
+.notice{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(100px);background:#004e49;color:white;padding:10px 20px;border-radius:25px;transition:.3s;z-index:9}.notice.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:1050px){.vote-grid{grid-template-columns:repeat(2,1fr)}.pill{font-size:30px}.question{font-size:25px}}@media(max-width:620px){.brand{flex-direction:column}.spacer-brand{display:none}.ministry{font-size:12px}.ministry-logo{width:210px;margin:0 auto}.vote-grid{grid-template-columns:1fr}.pill{font-size:24px;padding:9px 28px}.question{font-size:20px}.sub{font-size:15px}.card{min-height:380px}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="top">
+  <div class="brand">
+    <div class="spacer-brand"></div>
+    <div class="ministry">
+      <img src="IMG_8268.png" alt="شعار وزارة التعليم" class="ministry-logo">
+      <div class="school-name">مدرسة درب العقيدة</div>
+    </div>
+  </div>
+  <section class="hero">
+    <div class="pill">▥ &nbsp; تصويت تفاعلي</div>
+    <div class="question">أي أداة ذكاء اصطناعي تستخدمين أكثر؟</div>
+    <div class="sub">اختاري الأداة التي ترين أنها الأكثر فائدة في عملك التعليمي، ثم اذكري أهم ميزة لها.</div>
+  </section>
+</header>
+
+<main>
+<section class="vote-grid" id="cards"></section>
+<section class="feedback">
+  <h2>✎ ما أهم ميزة جعلتك تختارينها؟</h2>
+  <textarea id="feedback" placeholder="اكتبي إجابتك هنا ..."></textarea>
+  <button class="send" onclick="saveFeedback()">حفظ الملاحظة</button>
+</section>
+<div class="tip">💡 لا توجد إجابة صحيحة أو خاطئة.. الهدف أن نكتشف الأداة الأنسب لكل مهمة تعليمية.</div>
+</main>
+
+<footer class="footer">
+  <span>👥 تبادل الخبرات</span><span>💡 نلهم بعضنا</span><span>📈 نصنع مستقبلاً أفضل</span>
+  <span class="credit">إعداد وتصميم المعلمة ريم مبارك آل بويض</span>
+</footer>
+<div class="notice" id="notice"></div>
+</div>
+<script>
+const tools=[
+ {name:"ChatGPT",cls:"chat",logo:"✦",desc:"التخطيط والأفكار والمحتوى"},
+ {name:"Gemini",cls:"gem",logo:"✦",desc:"البحث والتكامل مع Google"},
+ {name:"NotebookLM",cls:"note",logo:"◉",desc:"تحليل المصادر والملفات"},
+ {name:"Canva",cls:"canva",logo:"Canva",desc:"التصميم والمواد البصرية"},
+ {name:"Microsoft Copilot",cls:"cop",logo:"◈",desc:"Word و PowerPoint و Excel و Teams"}
+];
+const key="ai-vote-2026";
+let votes=JSON.parse(localStorage.getItem(key)||"{}");
+let selected=localStorage.getItem("ai-selected")||"";
+function render(){
+ const wrap=document.getElementById("cards");
+ wrap.innerHTML=tools.map((t,i)=>{
+   const n=votes[t.name]||0,total=Object.values(votes).reduce((a,b)=>a+b,0),pct=total?Math.round(n/total*100):0;
+   return `<article class="card"><div><div class="logo ${t.cls}">${t.logo}</div><div class="name">${t.name}</div><div class="desc">${t.desc}</div></div>
+   <div><button class="btn ${selected===t.name?'selected':''}" onclick="vote('${t.name.replace(/'/g,"\\'")}')">◯ أصوّت له</button>
+   <span class="count">${n} صوت · ${pct}%</span><div class="bar"><div class="fill" style="width:${pct}%"></div></div></div></article>`;
+ }).join("");
+}
+function vote(name){
+ if(selected && selected!==name) votes[selected]=Math.max(0,(votes[selected]||0)-1);
+ if(selected===name){show("تم تثبيت اختيارك: "+name);return;}
+ votes[name]=(votes[name]||0)+1;selected=name;
+ localStorage.setItem(key,JSON.stringify(votes));localStorage.setItem("ai-selected",name);
+ render();show("تم تسجيل تصويتك لـ "+name+" ✓");
+}
+function saveFeedback(){
+ const text=document.getElementById("feedback").value.trim();
+ if(!text){show("اكتبي الميزة أولاً");return}
+ localStorage.setItem("ai-feedback",text);show("تم حفظ ملاحظتك على هذا الجهاز ✓");
+}
+function show(s){const n=document.getElementById("notice");n.textContent=s;n.classList.add("show");setTimeout(()=>n.classList.remove("show"),2200)}
+document.getElementById("feedback").value=localStorage.getItem("ai-feedback")||"";
+render();
+</script>
+</body></html>
