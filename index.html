@@ -83,7 +83,8 @@ footer{text-align:center;color:var(--muted);padding:20px}.adminlink{font-size:12
 <section class="card hidden" id="success">
   <div class="success">
     <h2>تم التسجيل بنجاح 🌿</h2>
-    <p>شكرًا لكِ، تم حفظ الحضور والتصويت والتقييم.</p>
+    <p>تم حفظ الحضور والتصويت والتقييم وإصدار شهادة الحضور تلقائيًا.</p>
+    <a id="certificateBtn" class="btn" href="#" target="_blank" rel="noopener">فتح شهادة الحضور PDF</a>
   </div>
 </section>
 
@@ -164,6 +165,9 @@ document.getElementById("submitBtn").addEventListener("click", async ()=>{
     if(!data.ok) throw new Error(data.error||"تعذر الحفظ");
     document.getElementById("formArea").classList.add("hidden");
     document.getElementById("success").classList.remove("hidden");
+    const cert = document.getElementById("certificateBtn");
+    if (data.certificate_url) { cert.href = data.certificate_url; }
+    else { cert.style.display = "none"; }
   }catch(e){showError("تعذر حفظ البيانات. تأكدي من نشر Google Apps Script كتطبيق ويب ثم حاولي مرة أخرى.");}
   finally{btn.disabled=false;btn.textContent="إرسال الحضور والتصويت والتقييم";}
 });
