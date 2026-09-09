@@ -160,9 +160,12 @@ document.getElementById("submitBtn").addEventListener("click", async ()=>{
   const payload={action:"submit",name,role,program,...ratings,comment:val("comment"),timestamp:new Date().toISOString()};
   const btn=document.getElementById("submitBtn"); btn.disabled=true; btn.textContent="جارٍ الحفظ...";
   try{
-    const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
-    const data=await r.json();
-    if(!data.ok) throw new Error(data.error||"تعذر الحفظ");
+    await fetch(API_URL,{
+  method:"POST",
+  mode:"no-cors",
+  headers:{"Content-Type":"text/plain;charset=utf-8"},
+  body:JSON.stringify(payload)
+});
     document.getElementById("formArea").classList.add("hidden");
     document.getElementById("success").classList.remove("hidden");
     const cert = document.getElementById("certificateBtn");
