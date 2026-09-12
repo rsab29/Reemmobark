@@ -159,19 +159,23 @@ document.getElementById("submitBtn").addEventListener("click", async ()=>{
   if(API_URL.startsWith("ضعِي_هنا")) return showError("تم تجهيز النموذج، لكن يلزم أولًا ربطه بقاعدة البيانات عبر Google Apps Script. راجعي ملف README.");
   const payload={action:"submit",name,role,program,...ratings,comment:val("comment"),timestamp:new Date().toISOString()};
   const btn=document.getElementById("submitBtn"); btn.disabled=true; btn.textContent="جارٍ الحفظ...";
-  try{
-    await fetch(API_URL,{
-  method:"POST",
-  mode:"no-cors",
-  headers:{"Content-Type":"text/plain;charset=utf-8"},
-  body:JSON.stringify(payload)
-});
-    document.getElementById("formArea").classList.add("hidden");
-    document.getElementById("success").classList.remove("hidden");
-    const cert = document.getElementById("certificateBtn");
-    if (data.certificate_url) { cert.href = data.certificate_url; }
-    else { cert.style.display = "none"; }
-  }catch(e){showError("تعذر حفظ البيانات. تأكدي من نشر Google Apps Script كتطبيق ويب ثم حاولي مرة أخرى.");}
+  try {
+  await fetch(API_URL,{
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload)
+  });
+
+  document.getElementById("formArea").classList.add("hidden");
+  document.getElementById("success").classList.remove("hidden");
+
+  const cert = document.getElementById("certificateBtn");
+  cert.style.display = "inline-block";
+
+} catch(e) {
+  showError("تعذر حفظ البيانات. تأكدي من نشر Google Apps Script.");
+}
   finally{btn.disabled=false;btn.textContent="إرسال الحضور والتصويت والتقييم";}
 });
 </script>
