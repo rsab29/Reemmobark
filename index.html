@@ -171,7 +171,8 @@ document.getElementById("submitBtn").addEventListener("click", async ()=>{
   document.getElementById("success").classList.remove("hidden");
 
   const cert = document.getElementById("certificateBtn");
-  cert.style.display = "inline-block";
+cert.href = API_URL + "?action=certificate&name=" + encodeURIComponent(name);
+cert.style.display = "inline-block";
 
 } catch(e) {
   showError("تعذر حفظ البيانات. تأكدي من نشر Google Apps Script.");
